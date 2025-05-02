@@ -12,7 +12,7 @@
             <label>Beam Length (m):</label>
             <input type="number" name="length" step="any" required>
 
-            <label>Load (N):</label>
+            <label>Load (N or Nm):</label>
             <input type="number" name="load" step="any" required>
 
             <label>Material:</label>
@@ -25,13 +25,42 @@
             <label>Moment of Inertia (m⁴):</label>
             <input type="number" name="I" step="any" required>
 
+            <label>Load Type:</label>
+            <select name="load_type" required>
+                <option value="point" {% if selected_load == "point" %}selected{% endif %}>Point Load at Center</option>
+                <option value="uniform" {% if selected_load == "uniform" %}selected{% endif %}>Uniformly Distributed Load</option>
+                <option value="moment" {% if selected_load == "moment" %}selected{% endif %}>Cantilever with End Moment</option>
+            </select>
+
             <button type="submit">Simulate</button>
         </form>
 
+        {% if result %}
+        <div class="output">
+            <h2>Deflection Result:</h2>
+            <p><strong>Maximum Deflection:</strong> {{ result }} m</p>
+            <p><strong>Formula Used:</strong> {{ formula }}</p>
+        </div>
+
+        <div id="beam-diagram">
+            <div class="beam"></div>
+            <div class="beam deflected"></div>
+        </div>
+        <p style="text-align:center;">Left: Before Load &nbsp;&nbsp; | &nbsp;&nbsp; Right: After Load</p>
+        {% endif %}
+
         {% if graph_url %}
-            <div style="margin-top: 30px; text-align: center;">
-                <img src="{{ url_for('static', filename=graph_url) }}" alt="Deflection Graph" style="max-width: 100%; border-radius: 10px; box-shadow: 0 0 20px cyan;">
-            </div>
+        <div style="margin-top: 30px; text-align: center;">
+            <img src="{{ url_for('static', filename=graph_url) }}" alt="Deflection Graph"
+                 style="max-width: 100%; border-radius: 10px; box-shadow: 0 0 20px cyan;">
+        </div>
+        {% endif %}
+
+        {% if explanation %}
+        <div class="info-section" style="margin-top: 40px;">
+            <h3>What’s Happening?</h3>
+            <p>{{ explanation }}</p>
+        </div>
         {% endif %}
     </div>
 </body>
