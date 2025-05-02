@@ -43,10 +43,14 @@
         </div>
 
         <div id="beam-diagram">
-            <div class="beam"></div>
-            <div class="beam deflected"></div>
+            <canvas id="beamCanvas" width="600" height="200" style="border: 1px solid #444; background: #111; margin-top: 20px;"></canvas>
         </div>
-        <p style="text-align:center;">Left: Before Load &nbsp;&nbsp; | &nbsp;&nbsp; Right: After Load</p>
+        <script>
+            // Call JS function to draw the beam animation
+            window.onload = function () {
+                drawBeam("{{ load_type }}", {{ result }});
+            };
+        </script>
         {% endif %}
 
         {% if graph_url %}
@@ -63,5 +67,7 @@
         </div>
         {% endif %}
     </div>
+
+    <script src="{{ url_for('static', filename='beam_visuals.js') }}"></script>
 </body>
 </html>
