@@ -6,68 +6,96 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h1>Beam Bending Simulator</h1>
-        <form method="POST">
-            <label>Beam Length (m):</label>
-            <input type="number" name="length" step="any" required>
+<div class="container">
+    <h1>Beam Bending Simulator</h1>
 
-            <label>Load (N or Nm):</label>
-            <input type="number" name="load" step="any" required>
+    <form method="POST">
+        <label>Beam Length (m):</label>
+        <input type="number" name="length" step="any" required>
 
-            <label>Material:</label>
-            <select name="E" required>
-                <option value="200000000000">Steel (200 GPa)</option>
-                <option value="70000000000">Aluminum (70 GPa)</option>
-                <option value="116000000000">Titanium (116 GPa)</option>
-            </select>
+        <label>Load (N or Nm):</label>
+        <input type="number" name="load" step="any" required>
 
-            <label>Moment of Inertia (m⁴):</label>
-            <input type="number" name="I" step="any" required>
+        <label>Material:</label>
+        <select name="E" required>
+            <option value="200000000000">Steel (200 GPa)</option>
+            <option value="70000000000">Aluminum (70 GPa)</option>
+            <option value="116000000000">Titanium (116 GPa)</option>
+        </select>
 
-            <label>Load Type:</label>
-            <select name="load_type" required>
-                <option value="point" {% if selected_load == "point" %}selected{% endif %}>Point Load at Center</option>
-                <option value="uniform" {% if selected_load == "uniform" %}selected{% endif %}>Uniformly Distributed Load</option>
-                <option value="moment" {% if selected_load == "moment" %}selected{% endif %}>Cantilever with End Moment</option>
-            </select>
+        <label>Moment of Inertia (m⁴):</label>
+        <input type="number" name="I" step="any" required>
 
-            <button type="submit">Simulate</button>
-        </form>
+        <label>Load Type:</label>
+        <select name="load_type" required>
+            <option value="point" {% if selected_load == "point" %}selected{% endif %}>Point Load at Center</option>
+            <option value="uniform" {% if selected_load == "uniform" %}selected{% endif %}>Uniformly Distributed Load</option>
+            <option value="moment" {% if selected_load == "moment" %}selected{% endif %}>Cantilever with End Moment</option>
+        </select>
 
-        {% if result %}
-        <div class="output">
-            <h2>Deflection Result:</h2>
-            <p><strong>Maximum Deflection:</strong> {{ result }} m</p>
-            <p><strong>Formula Used:</strong> {{ formula }}</p>
-        </div>
+        <button type="submit">Simulate</button>
+    </form>
 
-        <div id="beam-diagram">
-            <canvas id="beamCanvas" width="600" height="200" style="border: 1px solid #444; background: #111; margin-top: 20px;"></canvas>
-        </div>
-        <script>
-            // Call JS function to draw the beam animation
-            window.onload = function () {
-                drawBeam("{{ load_type }}", {{ result }});
-            };
-        </script>
-        {% endif %}
-
-        {% if graph_url %}
-        <div style="margin-top: 30px; text-align: center;">
-            <img src="{{ url_for('static', filename=graph_url) }}" alt="Deflection Graph"
-                 style="max-width: 100%; border-radius: 10px; box-shadow: 0 0 20px cyan;">
-        </div>
-        {% endif %}
-
-        {% if explanation %}
-        <div class="info-section" style="margin-top: 40px;">
-            <h3>What’s Happening?</h3>
-            <p>{{ explanation }}</p>
-        </div>
-        {% endif %}
+    {% if result %}
+    <div class="output">
+        <h2>Results</h2>
+        <p><strong>Maximum Deflection:</strong> {{ result }} m</p>
+        <p><strong>Used Formula:</strong> {{ formula }}</p>
     </div>
 
-    <script src="{{ url_for('static', filename='beam_visuals.js') }}"></script>
+    <h3>Deflection Curve</h3>
+    <div style="text-align: center;">
+        <img src="{{ url_for('static', filename=graph_url) }}" alt="Deflection Graph"
+             style="max-width: 100%; border-radius: 10px; box-shadow: 0 0 20px cyan;">
+    </div>
+
+    <h3>Moment Diagram</h3>
+    <div style="text-align: center;">
+        <img src="{{ url_for('static', filename=moment_url) }}" alt="Moment Diagram"
+             style="max-width: 100%; border-radius: 10px; box-shadow: 0 0 20px orange;">
+    </div>
+
+    <h3>Shear Force Diagram</h3>
+    <div style="text-align: center;">
+        <img src="{{ url_for('static', filename=shear_url) }}" alt="Shear Diagram"
+             style="max-width: 100%; border-radius: 10px; box-shadow: 0 0 20px lime;">
+    </div>
+    {% endif %}
+
+    {% if explanation %}
+    <div class="info-section">
+        <h3>Manual Calculation Explanation</h3>
+        <p>{{ explanation }}</p>
+    </div>
+    {% endif %}
+
+    <div class="info-section">
+        <h3>Beam Bending Equations</h3>
+        <ul>
+            <li><strong>Point Load at Center:</strong> δ = (P · L³) / (48 · E · I)</li>
+            <li><strong>UDL:</strong> δ = (5 · w · L⁴) / (384 · E · I)</li>
+            <li><strong>End Moment:</strong> δ = (M · L²) / (2 · E · I)</li>
+        </ul>
+        <p><strong>E:</strong> Young’s Modulus, <strong>I:</strong> Moment of Inertia, <strong>L:</strong> Beam Length</p>
+    </div>
+
+    <div class="info-section">
+        <h2>Beam Theory Tutorial</h2>
+        <ul>
+            <li>1.0 Differential Equation of the Deflection Curve</li>
+            <li>1.1 Small Deflection Assumption</li>
+            <li>1.2 Linearly Elastic Assumption</li>
+            <li>2.0 Bending Moment Equations by Region</li>
+            <li>3.0 Macauley’s Method</li>
+            <li>4.0 Superposition with Formula Tables</li>
+        </ul>
+        <p>Scroll up for detailed explanations under “Beam Bending Equations”.</p>
+    </div>
+
+    <footer>
+        <p style="text-align: center; margin-top: 30px;">Created by Daniel</p>
+    </footer>
+</div>
 </body>
 </html>
+

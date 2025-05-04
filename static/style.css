@@ -1,104 +1,95 @@
 body {
-    background: #0f0f0f;
-    font-family: 'Segoe UI', sans-serif;
-    color: white;
-    display: flex;
-    justify-content: center;
-    padding-top: 40px;
+    background-color: #111;
+    font-family: Arial, sans-serif;
+    color: #eee;
     margin: 0;
+    padding: 0;
 }
 
 .container {
-    background: rgba(255, 255, 255, 0.05);
+    max-width: 700px;
+    margin: auto;
     padding: 30px;
-    border-radius: 15px;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 0 15px #00f4ff;
-    width: 90%;
-    max-width: 600px;
+    background: #222;
+    border-radius: 12px;
+    box-shadow: 0 0 25px cyan;
 }
 
-h1 {
-    color: #00f4ff;
-    text-shadow: 0 0 10px #00f4ff;
+h1, h2, h3 {
     text-align: center;
-    margin-bottom: 20px;
-}
-
-label, input, select, button {
-    display: block;
-    width: 100%;
+    color: cyan;
     margin-bottom: 15px;
-    font-size: 16px;
 }
 
-input, select {
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+input, select, button {
     padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
     border: none;
-    border-radius: 8px;
-    background: #1c1c1c;
-    color: white;
+    background-color: #111;
+    color: #eee;
+    border: 1px solid #555;
+    transition: all 0.2s ease;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: cyan;
+    background-color: #1a1a1a;
 }
 
 button {
-    background: #00f4ff;
-    color: black;
+    background-color: cyan;
+    color: #000;
     font-weight: bold;
-    border: none;
-    padding: 12px;
-    border-radius: 8px;
     cursor: pointer;
-    transition: 0.2s;
+    margin-top: 10px;
+    transition: background-color 0.2s ease;
 }
 
 button:hover {
-    background: #00bcd4;
+    background-color: #0ff;
 }
 
-.output {
-    margin-top: 30px;
-    background: rgba(0, 244, 255, 0.1);
+.output, .info-section {
+    background: #333;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px #00f4ff;
-}
-
-#beam-diagram {
-    display: flex;
-    justify-content: space-between;
-    margin: 30px 0;
-}
-
-.beam {
-    height: 10px;
-    width: 45%;
-    background-color: white;
-    border-radius: 5px;
-    position: relative;
-}
-
-.beam.deflected::after {
-    content: '';
-    position: absolute;
-    top: -20px;
-    left: 0;
-    width: 100%;
-    height: 40px;
-    background: radial-gradient(ellipse at center, #00f4ff 0%, transparent 70%);
-    border-radius: 50%;
-    opacity: 0.5;
-}
-
-.info-section {
-    background: rgba(255, 255, 255, 0.03);
-    padding: 15px;
-    border-left: 4px solid #00f4ff;
+    border-radius: 8px;
     margin-top: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px #00f4ff40;
+    color: #fff;
+    border: 1px solid #0ff;
 }
 
-.info-section h3 {
-    margin-top: 0;
-    color: #00f4ff;
+/* IMAGE DIAGRAMS */
+img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+/* Colored shadows for diagrams */
+img[alt*="Deflection"] {
+    box-shadow: 0 0 20px cyan;
+}
+
+img[alt*="Moment"] {
+    box-shadow: 0 0 20px orange;
+}
+
+img[alt*="Shear"] {
+    box-shadow: 0 0 20px lime;
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        padding: 20px;
+    }
 }
